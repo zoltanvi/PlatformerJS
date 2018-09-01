@@ -12,7 +12,6 @@ class Player extends GameObject {
         this.isJumping = false;
         this.canJumpAgain = false;
         this.obstacles = obstacles;
-        this.myGroundHeight = 0;
         this.images = [];
         for (let i = 0; i < 2; i++) {
             this.images.push(new Image());
@@ -37,34 +36,35 @@ class Player extends GameObject {
         this.calculateBounds();
 
         this.vy += GRAVITY * deltaTime;
-        this.vy = parseFloat(this.vy.toPrecision(7));
         this.verticalCollision();
         this.horizontalCollision();
         this.move();
 
+        cameraOffset = this.x - (gamePanel.width / 2) + (this.width / 2);
+
+        
     }
 
     draw() {
         if (this.facingLeft) {
-            c.drawImage(this.images[0], this.x, this.y, this.width, this.height);
+            c.drawImage(this.images[0], (gamePanel.width / 2) - (this.width / 2), this.y, this.width, this.height);
         } else {
-            c.drawImage(this.images[1], this.x, this.y, this.width, this.height);
+            c.drawImage(this.images[1], (gamePanel.width / 2) - (this.width / 2), this.y, this.width, this.height);
         }
+
         
         
-        for (let i = 0; i < this.verticalRayCount; i++) {
-            if (this.verticalRays[i] != null) {
-                this.verticalRays[i].draw();
-            }
-        }
-        for (let i = 0; i < this.horizontalRayCount; i++) {
-            if (this.horizontalRays[i] != null) {
-                this.horizontalRays[i].draw();
-            }
-            if (this.horizontalRays2[i] != null) {
-                this.horizontalRays2[i].draw();
-            }
-        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
     }
 
     verticalCollision() {
@@ -122,7 +122,7 @@ class Player extends GameObject {
         }
         
         for (let i = 0; i < this.horizontalRayCount; i++) {
-            this.horizontalRays2[i] = new Raycast(this.right - (this.width / 2), (this.top  + 1) + i * this.horizontalRaySpacing, 4, rayLength, this.obstacles);
+            this.horizontalRays2[i] = new Raycast(this.right - (this.width / 2), (this.top + 1) + i * this.horizontalRaySpacing, 4, rayLength, this.obstacles);
             if (this.horizontalRays2[i].hit()) {
                 if (this.right >= this.horizontalRays2[i].obstacleHitPos) {
                     if (this.right > this.horizontalRays2[i].obstacleHitPos) {
@@ -134,7 +134,7 @@ class Player extends GameObject {
                 this.canGoRight = true;
             }
         }
-        console.log(`cangoLeft: ${this.canGoLeft}, cangoRight: ${this.canGoRight}`);
+       
 
     }
 
@@ -148,20 +148,12 @@ class Player extends GameObject {
 
     moveLeft() {
         if (this.canGoLeft) this.x -= this.moveSpeed * deltaTime;
-        
-
-        
     }
 
     moveRight() {
         if (this.canGoRight) this.x += this.moveSpeed * deltaTime;
-        
-
     }
 
-    stopMove() {
-        this.vx = 0;
-    }
 
     jump() {
         if (this.grounded) {
@@ -169,7 +161,7 @@ class Player extends GameObject {
             this.vy = this.firstJumpForce;
             this.move();
             this.grounded = false;
-            console.log("JUMP");
+           
         }
     }
 
@@ -192,15 +184,11 @@ class Player extends GameObject {
         if (leftPressed) {
             this.moveLeft();
             this.facingLeft = true;
-        } else {
-            this.stopMove();
         }
 
         if (rightPressed) {
             this.moveRight();
             this.facingLeft = false;
-        } else {
-            this.stopMove();
         }
 
     }

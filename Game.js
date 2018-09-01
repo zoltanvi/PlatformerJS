@@ -15,6 +15,7 @@ let redrawInterval = 1000 / FPS;
 let GRAVITY = 0.4;
 let levelObjects = [];
 let player;
+let cameraOffset = 0;
 
 window.addEventListener("keydown", keyDownHandler, false);
 window.addEventListener("keyup", keyUpHandler, false);
@@ -73,14 +74,17 @@ function gameLoop() {
 }
 
 function initGame(){
-    levelObjects.push(new Ground(0, gamePanel.height - 20, gamePanel.width, 20));
+    levelObjects.push(new Ground(0, gamePanel.height - 20, gamePanel.width * 3, 20));
     levelObjects.push(new Ground(0, gamePanel.height - 150, gamePanel.width / 2, 10));
     levelObjects.push(new Ground(0, gamePanel.height - 250, gamePanel.width / 2, 10));
     levelObjects.push(new Ground(0, gamePanel.height - 350, gamePanel.width / 2, 10));
     levelObjects.push(new Ground(0, gamePanel.height - 450, gamePanel.width / 2, 10));
     levelObjects.push(new Ground(gamePanel.width / 2 + 70, gamePanel.height - 100, 20, 100));
+    levelObjects.push(new Ground(600, gamePanel.height - 180, 60, 100));
+   
+
     
-    player = new Player((gamePanel.width / 2) - 100, 50, 28, 40, levelObjects);
+    player = new Player(0, 50, 28, 40, levelObjects);
 }
 
 

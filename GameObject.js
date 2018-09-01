@@ -29,8 +29,12 @@ class GameObject {
     }
 
     draw() {
-        c.fillStyle = this.color;
-        c.fillRect(this.x, this.y, this.width, this.height);
+        
+        
+        if(this.right >= cameraOffset){
+            c.fillStyle = this.color;
+            c.fillRect(this.x - cameraOffset, this.y, this.width, this.height);
+        }
     }
 
     calculateBounds() {
