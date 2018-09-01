@@ -30,11 +30,15 @@ class GameObject {
 
     draw() {
         
-        
-        if(this.right >= cameraOffset){
+        if (this.right > cameraOffsetX) {
+            c.save();
+            c.translate(-cameraOffsetX, cameraOffsetY);
             c.fillStyle = this.color;
-            c.fillRect(this.x - cameraOffset, this.y, this.width, this.height);
+            c.fillRect(this.x, this.y, this.width, this.height);
+            c.restore();
         }
+
+
     }
 
     calculateBounds() {
@@ -57,14 +61,14 @@ class GameObject {
 
     }
 
-    intersects(other){
+    intersects(other) {
         
-        if (this.left > other.right || other.left > this.right){
+        if (this.left > other.right || other.left > this.right) {
             return false;
         }
 
         
-        if (this.top < other.bottom || other.top < this.bottom){
+        if (this.top < other.bottom || other.top < this.bottom) {
             return false;
         }
 

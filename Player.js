@@ -24,8 +24,8 @@ class Player extends GameObject {
         this.verticalRaySpacing = this.width / (this.verticalRayCount - 1);
         this.horizontalRaySpacing = (this.height - 2) / (this.horizontalRayCount - 1);
         this.verticalRays = [];
-        this.horizontalRays = [];
-        this.horizontalRays2 = [];
+        this.leftRays = [];
+        this.rightRays = [];
         this.canGoLeft = true;
         this.canGoRight = true;
 
@@ -40,23 +40,25 @@ class Player extends GameObject {
         this.horizontalCollision();
         this.move();
 
-        cameraOffset = this.x - (gamePanel.width / 2) + (this.width / 2);
+        if(this.x - gamePanel.width + (gamePanel.width / 4) >= cameraOffsetX){
+            cameraOffsetX = this.x - gamePanel.width + (gamePanel.width / 4);
+        } else if(this.x - (gamePanel.width / 4) <= cameraOffsetX){
+            cameraOffsetX = this.x - (gamePanel.width / 4);
+        }
 
         
     }
 
     draw() {
+        c.save();
+        c.translate(-cameraOffsetX, cameraOffsetY);
         if (this.facingLeft) {
-            c.drawImage(this.images[0], (gamePanel.width / 2) - (this.width / 2), this.y, this.width, this.height);
+            c.drawImage(this.images[0], this.x, this.y, this.width, this.height);
         } else {
-            c.drawImage(this.images[1], (gamePanel.width / 2) - (this.width / 2), this.y, this.width, this.height);
+            c.drawImage(this.images[1], this.x, this.y, this.width, this.height);
         }
+        c.restore();
 
-        
-        
-        
-        
-        
         
         
         
@@ -108,11 +110,11 @@ class Player extends GameObject {
 
         
         for (let i = 0; i < this.horizontalRayCount; i++) {
-            this.horizontalRays[i] = new Raycast(this.left + (this.width / 2), (this.top + 1) + i * this.horizontalRaySpacing, 3, rayLength, this.obstacles);
-            if (this.horizontalRays[i].hit()) {
-                if (this.x <= this.horizontalRays[i].obstacleHitPos) {
-                    if (this.x < this.horizontalRays[i].obstacleHitPos) {
-                        this.x = this.horizontalRays[i].obstacleHitPos + 1;
+            this.leftRays[i] = new Raycast(this.left + (this.width / 2), (this.top + 1) + i * this.horizontalRaySpacing, 3, rayLength, this.obstacles);
+            if (this.leftRays[i].hit()) {
+                if (this.x <= this.leftRays[i].obstacleHitPos) {
+                    if (this.x < this.leftRays[i].obstacleHitPos) {
+                        this.x = this.leftRays[i].obstacleHitPos + 1;
                     }
                     this.canGoLeft = false;
                 }
@@ -122,11 +124,11 @@ class Player extends GameObject {
         }
         
         for (let i = 0; i < this.horizontalRayCount; i++) {
-            this.horizontalRays2[i] = new Raycast(this.right - (this.width / 2), (this.top + 1) + i * this.horizontalRaySpacing, 4, rayLength, this.obstacles);
-            if (this.horizontalRays2[i].hit()) {
-                if (this.right >= this.horizontalRays2[i].obstacleHitPos) {
-                    if (this.right > this.horizontalRays2[i].obstacleHitPos) {
-                        this.x = this.horizontalRays2[i].obstacleHitPos - this.width - 1;
+            this.rightRays[i] = new Raycast(this.right - (this.width / 2), (this.top + 1) + i * this.horizontalRaySpacing, 4, rayLength, this.obstacles);
+            if (this.rightRays[i].hit()) {
+                if (this.right >= this.rightRays[i].obstacleHitPos) {
+                    if (this.right > this.rightRays[i].obstacleHitPos) {
+                        this.x = this.rightRays[i].obstacleHitPos - this.width - 1;
                     }
                     this.canGoRight = false;
                 }

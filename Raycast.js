@@ -118,37 +118,26 @@ class Raycast{
 
 
     draw(){
+        c.save();
+        c.translate(-cameraOffsetX, cameraOffsetY);
         c.beginPath();
-        c.moveTo((gamePanel.width / 2), this.y);
+        c.moveTo(this.x, this.y);
         c.lineWidth = 2;
         c.strokeStyle = 'rgba(255, 0, 0, 0.4)';
 
         switch (this.direction) {
-
-           
             
-           
+            case 1: c.lineTo(this.x, this.y - this.length); break;
             
-           
+            case 2: c.lineTo(this.x, this.y + this.length);  break;
             
-            case 3: c.lineTo((gamePanel.width / 2) - this.length, this.y);  break;
+            case 3: c.lineTo(this.x - this.length, this.y);  break;
             
-            case 4: c.lineTo((gamePanel.width / 2) + this.length, this.y);  break;
-
-
-
-            
-            
-            
-            
-            
-            
-            
-            
-            
+            case 4: c.lineTo(this.x + this.length, this.y);  break;
         }
         c.closePath();
         c.stroke();
+        c.restore();
     }
 
 }
