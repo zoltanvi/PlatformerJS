@@ -1,20 +1,20 @@
 class GameObject {
     constructor(x, y, width, height, isStatic) {
-       
+        
         this.x = x;
         this.y = y;
 
-    
+        
         this.left = x;              
         this.top = y;               
         this.right = x + width;     
         this.bottom = y + height;   
 
-    
+        
         this.width = width;
         this.height = height;
 
-
+        
         this.isStatic = isStatic;
         this.color = "#ff5b45";
 

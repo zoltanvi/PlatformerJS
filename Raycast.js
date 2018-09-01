@@ -13,7 +13,8 @@ class Raycast{
         this.direction = direction;
         this.length = length;
         this.obstacles = obstacles;
-        this.hitDistance = 0;
+        this.hitDistance = -1
+		this.obstacleHitPos = -1;
     }
 
     setPosition(x, y){
@@ -45,13 +46,18 @@ class Raycast{
         for (let i = 0; i < this.obstacles.length; i++) {
             let obstacle = this.obstacles[i];
 
+
+
             if(obstacle.left <= this.x && obstacle.right >= this.x){
 
                 switch (this.direction) {
 
+
                     case 1:
 
                         if((obstacle.bottom >= this.y - this.length) && (obstacle.bottom <= this.y)){
+
+                            this.obstacleHitPos = obstacle.bottom;
 
                             if(this.hitDistance > this.y - obstacle.bottom){
                                 this.hitDistance = this.y - obstacle.bottom;
@@ -65,12 +71,14 @@ class Raycast{
 
                         if((obstacle.top <= this.y + this.length) && (obstacle.top >= this.y)){
 
+								this.obstacleHitPos = obstacle.top;
                             if(this.hitDistance > obstacle.top - this.y){
                                 this.hitDistance = obstacle.top - this.y;
                             }
                             collision = true;
                         }
                         break;
+
 
 
                     case 3:

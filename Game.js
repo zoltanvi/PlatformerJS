@@ -63,7 +63,7 @@ function gameLoop() {
     deltaTime = (drawStart - startTime) / redrawInterval;
 
 
-
+    
     update();
     draw();
 
@@ -75,11 +75,11 @@ function gameLoop() {
 function initGame(){
     levelObjects.push(new Ground(0, gamePanel.height - 60, gamePanel.width, 60));
     levelObjects.push(new Ground(0, gamePanel.height - 150, gamePanel.width / 2, 10));
-
+    levelObjects.push(new Ground(0, gamePanel.height - 250, gamePanel.width / 2, 10));
     levelObjects.push(new Ground(0, gamePanel.height - 350, gamePanel.width / 2, 10));
-
-    levelObjects.push(new Ground(0, gamePanel.height - 550, gamePanel.width / 2, 10));
-
+    levelObjects.push(new Ground(0, gamePanel.height - 450, gamePanel.width / 2, 10));
+    levelObjects.push(new Ground(gamePanel.width / 2, gamePanel.height - 100, 20, 100));
+    
     player = new Player((gamePanel.width / 2) - 100, 50, 28, 40, levelObjects);
 }
 
@@ -100,7 +100,7 @@ function update() {
 }
 
 function draw() {
-
+    
     c.fillStyle = "#f2efe8";
     c.fillRect(0, 0, gamePanel.width, gamePanel.height);
 
