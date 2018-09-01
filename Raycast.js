@@ -46,65 +46,71 @@ class Raycast{
         for (let i = 0; i < this.obstacles.length; i++) {
             let obstacle = this.obstacles[i];
 
-
-
-            if(obstacle.left <= this.x && obstacle.right >= this.x){
-
                 switch (this.direction) {
 
-
+                        
                     case 1:
-
-                        if((obstacle.bottom >= this.y - this.length) && (obstacle.bottom <= this.y)){
-
-                            this.obstacleHitPos = obstacle.bottom;
-
-                            if(this.hitDistance > this.y - obstacle.bottom){
-                                this.hitDistance = this.y - obstacle.bottom;
+                        if(obstacle.left <= this.x && obstacle.right >= this.x) {
+                            
+                            if ((obstacle.bottom >= this.y - this.length) && (obstacle.bottom <= this.y)) {
+                                
+                                this.obstacleHitPos = obstacle.bottom;
+                                
+                                if (this.hitDistance > this.y - obstacle.bottom) {
+                                    this.hitDistance = this.y - obstacle.bottom;
+                                }
+                                collision = true;
                             }
-                            collision = true;
                         }
                         break;
 
-
+                        
                     case 2:
-
-                        if((obstacle.top <= this.y + this.length) && (obstacle.top >= this.y)){
-
-								this.obstacleHitPos = obstacle.top;
-                            if(this.hitDistance > obstacle.top - this.y){
-                                this.hitDistance = obstacle.top - this.y;
+                        if(obstacle.left <= this.x && obstacle.right >= this.x) {
+                            
+                            if ((obstacle.top <= this.y + this.length) && (obstacle.top >= this.y)) {
+                                
+                                this.obstacleHitPos = obstacle.top;
+                                if (this.hitDistance > obstacle.top - this.y) {
+                                    this.hitDistance = obstacle.top - this.y;
+                                }
+                                collision = true;
                             }
-                            collision = true;
                         }
                         break;
 
 
-
+                        
                     case 3:
-
-                        if((obstacle.right >= this.x - this.length) && (obstacle.right <= this.x)){
-
-                            if(this.hitDistance > this.x - obstacle.right){
-                                this.hitDistance = this.x - obstacle.right;
+                        if(obstacle.top <= this.y && obstacle.bottom >= this.y) {
+                            
+                            if ((obstacle.right >= this.x - this.length) && (obstacle.right <= this.x)) {
+                                
+                                this.obstacleHitPos = obstacle.right;
+                                if (this.hitDistance > this.x - obstacle.right) {
+                                    this.hitDistance = this.x - obstacle.right;
+                                }
+                                collision = true;
                             }
-                            collision = true;
                         }
                         break;
 
-
+                        
                     case 4:
-
-                        if((obstacle.left <= this.x + this.length) && (obstacle.left >= this.x)){
-
-                            if(this.hitDistance > obstacle.left - this.x){
-                                this.hitDistance = obstacle.left - this.x;
+                        if(obstacle.top <= this.y && obstacle.bottom >= this.y) {
+                            
+                            if ((obstacle.left <= this.x + this.length) && (obstacle.left >= this.x)) {
+                                
+                                this.obstacleHitPos = obstacle.left;
+                                if (this.hitDistance > obstacle.left - this.x) {
+                                    this.hitDistance = obstacle.left - this.x;
+                                }
+                                collision = true;
                             }
-                            collision = true;
                         }
                         break;
                 }
-            }
+
         }
 
         return collision;
@@ -115,16 +121,16 @@ class Raycast{
         c.beginPath();
         c.moveTo(this.x, this.y);
         c.lineWidth = 2;
-        c.strokeStyle = "#ff0001";
+        c.strokeStyle = 'rgba(255, 0, 0, 0.4)';
 
         switch (this.direction) {
-
+            
             case 1: c.lineTo(this.x, this.y - this.length); break;
-
+            
             case 2: c.lineTo(this.x, this.y + this.length);  break;
-
+            
             case 3: c.lineTo(this.x - this.length, this.y);  break;
-
+            
             case 4: c.lineTo(this.x + this.length, this.y);  break;
         }
         c.closePath();
