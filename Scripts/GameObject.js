@@ -30,9 +30,13 @@ class GameObject {
 
 	draw() {
 		// Optimalization, it only draws what is inside the viewport
-		if (this.right > cameraOffsetX) {
+		if (this.right > cameraOffsetX &&
+			this.left < cameraOffsetX + gamePanel.width &&
+			this.bottom > cameraOffsetY &&
+			this.top < cameraOffsetY + gamePanel.height) {
+
 			c.save();
-			c.translate(-cameraOffsetX, cameraOffsetY);
+			c.translate(-cameraOffsetX, -cameraOffsetY);
 			c.fillStyle = this.color;
 			c.fillRect(this.x, this.y, this.width, this.height);
 			c.restore();

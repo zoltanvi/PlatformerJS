@@ -17,6 +17,11 @@ let levelObjects = [];
 let player;
 let cameraOffsetX = 0;
 let cameraOffsetY = 0;
+let tileHeight = 44;
+let tileWidth = 44;
+
+let map = [];
+let mapWidth = 0, mapHeight = level.length;
 
 window.addEventListener("keydown", keyDownHandler, false);
 window.addEventListener("keyup", keyUpHandler, false);
@@ -63,9 +68,12 @@ function gameLoop() {
 
 	const drawStart = Date.now();
 	deltaTime = (drawStart - startTime) / redrawInterval;
-
-
-	// console.log(deltaTime);
+	if(deltaTime < 0){
+		deltaTime = 0;
+	} else if(deltaTime > 1){
+		deltaTime = 1;
+	}
+	// deltaTime = (deltaTime > 1) ? 1 : deltaTime;
 	update();
 	draw();
 
@@ -76,18 +84,28 @@ function gameLoop() {
 
 function initGame() {
 
-	// TODO: map generator from ascii text
-	levelObjects.push(new Ground(0, gamePanel.height - 20, gamePanel.width * 3, 20));
-	levelObjects.push(new Ground(0, gamePanel.height - 150, gamePanel.width / 2, 10));
-	levelObjects.push(new Ground(0, gamePanel.height - 250, gamePanel.width / 2, 10));
-	levelObjects.push(new Ground(0, gamePanel.height - 350, gamePanel.width / 2, 10));
+	// Initializes the map
+	for (let i = 0; i < level.length; i++) {
+		for (let j = 0; j < level[i].length; j++) {
+			mapWidth = (j > mapWidth) ? j : mapWidth;
+			map[j] = [];
+		}
+	}
 
-	levelObjects.push(new Ground(0, gamePanel.height - 450, gamePanel.width / 2, 10, "#7a4aff"));
+	// Creates the map
+	for (let j = 0; j < level.length; j++) {
+		for (let i = 0; i < level[j].length; i++) {
+			if(level[j].charAt(i) === "#"){
+				map[j][i] = new Ground(i * tileWidth, j * tileHeight, tileWidth, tileHeight, "#303030");
+			}
 
-	levelObjects.push(new Ground(gamePanel.width / 2 + 70, gamePanel.height - 100, 20, 100));
-	levelObjects.push(new Ground(600, gamePanel.height - 180, 60, 100));
+			if(level[j].charAt(i) === "@"){
+				player = new Player(i * tileWidth, j * tileHeight, 32, 44, null);
+			}
 
-	player = new Player(0, 50, 32, 44, levelObjects);
+		}
+	}
+
 }
 
 
@@ -107,12 +125,16 @@ function update() {
 
 function draw() {
 	// draws background
-	c.fillStyle = "#f2efe8";
+	c.fillStyle = "#fafafa";
 	c.fillRect(0, 0, gamePanel.width, gamePanel.height);
 
 	// draws the level
-	for (let i = 0; i < levelObjects.length; i++) {
-		levelObjects[i].draw();
+	for (let i = 0; i < map.length; i++) {
+		for (let j = 0; j < map[i].length; j++) {
+			if(map[i][j] != null){
+				map[i][j].draw();
+			}
+		}
 	}
 
 	// draws the player

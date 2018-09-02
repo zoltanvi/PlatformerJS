@@ -122,7 +122,7 @@ class Raycast {
 
 	draw() {
 		c.save();
-		c.translate(-cameraOffsetX, cameraOffsetY);
+		c.translate(-cameraOffsetX, -cameraOffsetY);
 		c.beginPath();
 		c.moveTo(this.x, this.y);
 		c.lineWidth = 2;
