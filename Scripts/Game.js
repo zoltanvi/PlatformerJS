@@ -96,11 +96,11 @@ function initGame() {
 	for (let j = 0; j < level.length; j++) {
 		for (let i = 0; i < level[j].length; i++) {
 			if(level[j].charAt(i) === "#"){
-				map[j][i] = new Ground(i * tileWidth, j * tileHeight, tileWidth, tileHeight, "#303030");
+				map[j][i] = new Ground(i * tileWidth, j * tileHeight, tileWidth, tileHeight, "#00b6ff");
 			}
 
 			if(level[j].charAt(i) === "@"){
-				player = new Player(i * tileWidth, j * tileHeight, 32, 44, null);
+				player = new Player(i * tileWidth, j * tileHeight, 32, 44);
 			}
 
 		}
