@@ -17,8 +17,8 @@ let levelObjects = [];
 let player;
 let cameraOffsetX = 0;
 let cameraOffsetY = 0;
-let tileHeight = 44;
-let tileWidth = 44;
+let tileHeight = 32;
+let tileWidth = 32;
 
 let map = [];
 let mapWidth = 0, mapHeight = level.length;
@@ -100,7 +100,7 @@ function initGame() {
 			}
 
 			if(level[j].charAt(i) === "@"){
-				player = new Player(i * tileWidth, j * tileHeight, 32, 44);
+				player = new Player(i * tileWidth, j * tileHeight, 28, 44);
 			}
 
 		}

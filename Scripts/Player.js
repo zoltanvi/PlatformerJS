@@ -12,6 +12,7 @@ class Player extends GameObject {
 		this.isJumping = false;
 		this.jumpCount = 0;
 		this.MAX_JUMP_COUNT = 2;
+		this.spritePadding = 4;
 
 		this.images = [];
 		for (let i = 0; i < 2; i++) {
@@ -114,9 +115,9 @@ class Player extends GameObject {
 		}
 
 		if (this.facingLeft) {
-			c.drawImage(this.images[0], (this.currentFrame * this.width), 0, this.width, this.height, this.x, this.y, this.width, this.height);
+			c.drawImage(this.images[0], (this.currentFrame * (this.width+this.spritePadding)) + this.currentFrame, 0, (this.width+this.spritePadding), this.height, this.x, this.y, (this.width+this.spritePadding), this.height);
 		} else {
-			c.drawImage(this.images[1], (this.currentFrame * this.width), 0, this.width, this.height, this.x, this.y, this.width, this.height);
+			c.drawImage(this.images[1], (this.currentFrame * (this.width+this.spritePadding)) + this.currentFrame, 0, (this.width+this.spritePadding), this.height, this.x, this.y, (this.width+this.spritePadding), this.height);
 
 		}
 		c.restore();

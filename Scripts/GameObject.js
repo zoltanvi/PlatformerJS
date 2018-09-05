@@ -37,10 +37,16 @@ class GameObject {
 
 			c.save();
 			c.translate(-cameraOffsetX, -cameraOffsetY);
-			c.fillStyle = this.color;
-			c.fillRect(this.x, this.y, this.width, this.height);
+
+			this.drawOverride();
+
 			c.restore();
 		}
+	}
+
+	drawOverride() {
+		c.fillStyle = this.color;
+		c.fillRect(this.x, this.y, this.width, this.height);
 	}
 
 	calculateBounds() {
