@@ -20,6 +20,16 @@ let cameraOffsetY = 0;
 let tileHeight = 32;
 let tileWidth = 32;
 
+let tiles = {
+	topLeft : "sprites/Tiles/TL.png",
+	topCenter : "sprites/Tiles/TM.png",
+	topRight : "sprites/Tiles/TR.png",
+	center : "sprites/Tiles/MM.png",
+	noBottom : "sprites/Tiles/noBottom.png",
+	single : "sprites/Tiles/Single.png",
+
+};
+
 let map = [];
 let mapWidth = 0, mapHeight = level.length;
 
@@ -93,14 +103,38 @@ function initGame() {
 	}
 
 	// Creates the map
-	for (let j = 0; j < level.length; j++) {
-		for (let i = 0; i < level[j].length; i++) {
-			if(level[j].charAt(i) === "#"){
-				map[j][i] = new Ground(i * tileWidth, j * tileHeight, tileWidth, tileHeight, "#00b6ff");
+	for (let i = 0; i < level.length; i++) {
+		for (let j = 0; j < level[i].length; j++) {
+
+			let left = false;
+			let right = false;
+			let top = false;
+			let bottom = false;
+
+
+			if(level[i].charAt(j) === "#"){
+				if(i - 1 >= 0 && level[i - 1].charAt(j) === "#") top = true;
+				if(i + 1 <= level.length - 1 && level[i + 1].charAt(j) === "#")	bottom = true;
+				if(j - 1 >= 0 && level[i].charAt(j - 1) === "#") left = true;
+				if(j + 1 <= level[i].length - 1 && level[i].charAt(j + 1) === "#") right = true;
+
+				if(!top && !left && right){
+					map[i][j] = new Tile(j * tileWidth, i * tileHeight, tileWidth, tileHeight, tiles.topLeft);
+				} else if(!top && left && !right){
+					map[i][j] = new Tile(j * tileWidth, i * tileHeight, tileWidth, tileHeight, tiles.topRight);
+				} else if(!top && left && right){
+					map[i][j] = new Tile(j * tileWidth, i * tileHeight, tileWidth, tileHeight, tiles.topCenter);
+				} else if(!top && !bottom && !left && !right) {
+					map[i][j] = new Tile(j * tileWidth, i * tileHeight, tileWidth, tileHeight, tiles.single);
+				} else if(bottom && !left && !right && !top) {
+					map[i][j] = new Tile(j * tileWidth, i * tileHeight, tileWidth, tileHeight, tiles.noBottom);
+				} else {
+					map[i][j] = new Tile(j * tileWidth, i * tileHeight, tileWidth, tileHeight, tiles.center);
+				}
 			}
 
-			if(level[j].charAt(i) === "@"){
-				player = new Player(i * tileWidth, j * tileHeight, 28, 44);
+			if(level[i].charAt(j) === "@"){
+				player = new Player(j * tileWidth, i * tileHeight, 28, 44);
 			}
 
 		}
@@ -125,19 +159,19 @@ function update() {
 
 function draw() {
 	// draws background
-	c.fillStyle = "#fafafa";
+	c.fillStyle = "#9ec5e0";
 	c.fillRect(0, 0, gamePanel.width, gamePanel.height);
 
 	// draws the level
 	for (let i = 0; i < map.length; i++) {
 		for (let j = 0; j < map[i].length; j++) {
 			if(map[i][j] != null){
-				map[i][j].draw();
+				map[i][j].render();
 			}
 		}
 	}
 
 	// draws the player
-	player.draw();
+	player.render();
 
 }

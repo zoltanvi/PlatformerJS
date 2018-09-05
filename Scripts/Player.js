@@ -91,7 +91,7 @@ class Player extends GameObject {
 	/**
 	 * Draws the player to the canvas
 	 */
-	draw() {
+	render() {
 		c.save();
 		c.translate(-cameraOffsetX, -cameraOffsetY);
 

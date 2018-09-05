@@ -28,7 +28,7 @@ class GameObject {
 		this.applyVelocity();
 	}
 
-	draw() {
+	render() {
 		// Optimalization, it only draws what is inside the viewport
 		if (this.right > cameraOffsetX &&
 			this.left < cameraOffsetX + gamePanel.width &&
@@ -38,13 +38,13 @@ class GameObject {
 			c.save();
 			c.translate(-cameraOffsetX, -cameraOffsetY);
 
-			this.drawOverride();
+			this.draw();
 
 			c.restore();
 		}
 	}
 
-	drawOverride() {
+	draw() {
 		c.fillStyle = this.color;
 		c.fillRect(this.x, this.y, this.width, this.height);
 	}
