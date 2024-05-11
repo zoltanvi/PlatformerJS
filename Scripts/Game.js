@@ -1,7 +1,10 @@
 const gamePanel = document.getElementById("gamePanel");
 const c = gamePanel.getContext("2d");
 
-const requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame;
+var requestAnimationFrame = window.requestAnimationFrame ||
+    window.mozRequestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    window.msRequestAnimationFrame;
 
 let startTime;
 let leftPressed = false;
@@ -27,7 +30,15 @@ let tiles = {
 	center : "sprites/Tiles/MM.png",
 	noBottom : "sprites/Tiles/noBottom.png",
 	single : "sprites/Tiles/Single.png",
-
+	sideBoth : "sprites/Tiles/SB.png",
+	sideLeft : "sprites/Tiles/SL.png",
+	sideRight : "sprites/Tiles/SR.png",
+	bottomLeft : "sprites/Tiles/BL.png",
+	bottomCenter : "sprites/Tiles/BM.png",
+	bottomRight : "sprites/Tiles/BR.png",
+	topBoth : "sprites/Tiles/TB.png",
+	exceptRight : "sprites/Tiles/ER.png", 
+	exceptLeft : "sprites/Tiles/EL.png"
 };
 
 let map = [];
@@ -35,6 +46,47 @@ let mapWidth = 0, mapHeight = level.length;
 
 window.addEventListener("keydown", keyDownHandler, false);
 window.addEventListener("keyup", keyUpHandler, false);
+
+window.onload = function () {
+	initGame();
+	startTime = Date.now();
+	startAnimating(60);
+};
+
+function startAnimating(fps) {
+    fpsInterval = 1000 / fps;
+    then = Date.now();
+    startTime = then;
+    console.log(startTime);
+    animate();
+}
+
+function animate() {
+
+    // request another frame
+    requestAnimationFrame(animate);
+
+    // calc elapsed time since last loop
+    now = Date.now();
+    elapsed = now - then;
+
+    // if enough time has elapsed, draw the next frame
+    if (elapsed > fpsInterval) {
+
+        // Get ready for next frame by setting then=now, but...
+        // Also, adjust for fpsInterval not being multiple of 16.67
+        then = now - (elapsed % fpsInterval);
+
+        // draw next frame
+        gameLoop();
+
+        // TESTING...Report #seconds since start and achieved fps.
+        var sinceStart = now - startTime;
+        var currentFps = Math.round(1000 / (sinceStart / ++frameCount) * 100) / 100;
+        $results.text("Elapsed time= " + Math.round(sinceStart / 1000 * 100) / 100 + " secs @ " + currentFps + " fps.");
+    }
+}
+
 
 function keyDownHandler(e) {
 	const k = e.key;
@@ -87,9 +139,8 @@ function gameLoop() {
 	update();
 	draw();
 
-
 	startTime = drawStart;
-	requestAnimationFrame(gameLoop);
+
 }
 
 function initGame() {
@@ -118,19 +169,28 @@ function initGame() {
 				if(j - 1 >= 0 && level[i].charAt(j - 1) === "#") left = true;
 				if(j + 1 <= level[i].length - 1 && level[i].charAt(j + 1) === "#") right = true;
 
-				if(!top && !left && right){
-					map[i][j] = new Tile(j * tileWidth, i * tileHeight, tileWidth, tileHeight, tiles.topLeft);
-				} else if(!top && left && !right){
-					map[i][j] = new Tile(j * tileWidth, i * tileHeight, tileWidth, tileHeight, tiles.topRight);
-				} else if(!top && left && right){
-					map[i][j] = new Tile(j * tileWidth, i * tileHeight, tileWidth, tileHeight, tiles.topCenter);
-				} else if(!top && !bottom && !left && !right) {
-					map[i][j] = new Tile(j * tileWidth, i * tileHeight, tileWidth, tileHeight, tiles.single);
-				} else if(bottom && !left && !right && !top) {
-					map[i][j] = new Tile(j * tileWidth, i * tileHeight, tileWidth, tileHeight, tiles.noBottom);
-				} else {
-					map[i][j] = new Tile(j * tileWidth, i * tileHeight, tileWidth, tileHeight, tiles.center);
-				}
+				let tileType;
+				
+				
+				if     (!top &&  bottom && !left &&  right) tileType = tiles.topLeft;
+				else if(!top &&  bottom &&  left && !right) tileType = tiles.topRight;
+				else if(!top &&  bottom &&  left &&  right) tileType = tiles.topCenter;
+				else if(!top && !bottom && !left && !right) tileType = tiles.single;
+				else if(!top &&  bottom && !left && !right) tileType = tiles.noBottom;
+				else if( top &&  bottom && !left &&  right) tileType = tiles.sideLeft;
+				else if( top &&  bottom &&  left && !right) tileType = tiles.sideRight;
+				else if( top && !bottom && !left &&  right) tileType = tiles.bottomLeft;
+				else if( top && !bottom &&  left &&  right) tileType = tiles.bottomCenter;
+				else if( top && !bottom &&  left && !right) tileType = tiles.bottomRight;	
+				else if(!top && !bottom &&  left &&  right) tileType = tiles.topBoth;	
+				else if(!top && !bottom &&  left && !right) tileType = tiles.exceptLeft;	
+				else if(!top && !bottom && !left &&  right) tileType = tiles.exceptRight;	
+				else if( top &&  bottom && !left && !right) tileType = tiles.sideBoth;
+				else                                        tileType = tiles.center;
+				
+				
+				map[i][j] = new Tile(j * tileWidth, i * tileHeight, tileWidth, tileHeight, tileType);
+				
 			}
 
 			if(level[i].charAt(j) === "@"){
@@ -141,13 +201,6 @@ function initGame() {
 	}
 
 }
-
-
-window.onload = function () {
-	initGame();
-	startTime = Date.now();
-	requestAnimationFrame(gameLoop);
-};
 
 
 function update() {
